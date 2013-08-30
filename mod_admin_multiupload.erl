@@ -62,8 +62,15 @@ clear_batch(Context) ->
 clear_batch(Batch, Context) ->
     Files = z_context:get_session(multiupload_files, Context, []),
     Files1 = lists:foldl(
-               fun(B, All) ->
-                       lists:delete(B, All)
+               fun(F, All) ->
+                       TmpFile = proplists:get_value(tmpfile, F),
+                       case filelib:is_regular(TmpFile) of
+                           true ->
+                               file:delete(TmpFile);
+                           false ->
+                               nop
+                       end,
+                       lists:delete(F, All)
                end,
                Files, Batch),
     z_context:set_session(multiupload_files, Files1, Context).
