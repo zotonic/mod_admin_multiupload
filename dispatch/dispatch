@@ -1,0 +1,3 @@
+[
+ {admin_multiupload, ["admin", "media", "multiupload"], controller_admin, [{template, "admin_multiupload.tpl"}]}
+].
