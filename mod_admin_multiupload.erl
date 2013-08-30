@@ -40,8 +40,9 @@ observe_admin_menu(admin_menu, Acc, Context) ->
       id=admin_multiupload,
       parent=admin_content,
       label=?__("Batch upload", Context),
-      url={admin_multiupload, []}
-    } |Acc].
+      url={admin_multiupload, []},
+      visiblecheck={acl, use, ?MODULE}}
+     | Acc].
 
 
 event(#postback{message=save_batch}, Context) ->
