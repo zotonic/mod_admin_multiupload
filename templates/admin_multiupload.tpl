@@ -41,7 +41,6 @@
       progressall: function (e, data) {
       $('#uploadbutton').hide();
       $('#progressarea').show();
-      console.log(data.loaded, data.total);
       var progress = parseInt(data.loaded / data.total * 100, 10);
       $('#progress .bar').css(
       'width',

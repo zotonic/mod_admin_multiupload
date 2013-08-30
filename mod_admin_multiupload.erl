@@ -49,11 +49,11 @@ event(#postback{message=save_batch}, Context) ->
 event(#postback{message={delete_file, [{file, F}]}}, Context) ->
     clear_batch([F], Context),
     Html = z_template:render("_admin_multiupload_filelist.tpl", [], Context),
-    z_render:replace("files", Html, Context);
+    z_render:update("files", Html, Context);
 event(#postback{message=cancel_batch}, Context) ->
     clear_batch(Context),
     Html = z_template:render("_admin_multiupload_filelist.tpl", [], Context),
-    z_render:replace("files", Html, Context).
+    z_render:update("files", Html, Context).
 
 
 clear_batch(Context) ->
