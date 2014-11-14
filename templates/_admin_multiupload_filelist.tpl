@@ -1,3 +1,7 @@
+{#
+params:
+- id
+#}
 {% with m.session.multiupload_files as files %}
     {% if files %}
         <table class="table table-striped">
@@ -27,7 +31,7 @@
                         <td>
                             {{ file.mime }}
 
-                            {% button class="btn btn-mini pull-right" text=_"Delete" postback={delete_file file=file} delegate=`mod_admin_multiupload` %}
+                            {% button class="btn btn-default btn-xs pull-right" text=_"Delete" postback={delete_file file=file id=id} delegate=`mod_admin_multiupload` %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -35,14 +39,16 @@
         </table>
 
         <div class="well">
-            {% button class="btn btn-primary" text=_"Save batch as media files"
+            {% button class="btn btn-primary" text=_"Upload files"
                 action={mask body}
-                postback=`save_batch` delegate=`mod_admin_multiupload` %}
-            {% button class="btn" text=_"Cancel this batch"
-                postback=`cancel_batch` delegate=`mod_admin_multiupload` %}
+                postback={save_batch id=id}
+                delegate=`mod_admin_multiupload`
+            %}
+            {% button class="btn btn-default" text=_"Clear selection"
+                postback={cancel_batch id=id}
+                delegate=`mod_admin_multiupload`
+            %}
         </div>
-        
-    {% else %}
-        <p><em>{_ No files uploaded in this batch _}</em></p>
+
     {% endif %}
 {% endwith %}
