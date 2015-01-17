@@ -8,13 +8,13 @@ params:
             <thead>
                 <tr>
                 <th>
-                    {_ Title / filename _}
+                    {_ MULTIUPLOAD_HEADER_FILENAME _}
                 </th>
                 <th>
-                    {_ Size _}
+                    {_ MULTIUPLOAD_HEADER_SIZE _}
                 </th>
                 <th>
-                    {_ Type _}
+                    {_ MULTIUPLOAD_HEADER_TYPE _}
                 </th>
             </tr>
             </thead>
@@ -31,7 +31,7 @@ params:
                         <td>
                             {{ file.mime }}
 
-                            {% button class="btn btn-default btn-xs pull-right" text=_"Delete" postback={delete_file file=file id=id} delegate=`mod_admin_multiupload` %}
+                            {% button class="btn btn-default btn-xs pull-right" text=_"MULTIUPLOAD_ACTION_DELETE" postback={delete_file file=file id=id} delegate=`mod_admin_multiupload` %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -39,12 +39,12 @@ params:
         </table>
 
         <div class="well">
-            {% button class="btn btn-primary" text=_"Upload files"
+            {% button class="btn btn-primary" text=_"MULTIUPLOAD_ACTION_UPLOAD"
                 action={mask body}
                 postback={save_batch id=id}
                 delegate=`mod_admin_multiupload`
             %}
-            {% button class="btn btn-default" text=_"Clear selection"
+            {% button class="btn btn-default" text=_"MULTIUPLOAD_ACTION_CLEAR"
                 postback={cancel_batch id=id}
                 delegate=`mod_admin_multiupload`
             %}
