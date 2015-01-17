@@ -24,7 +24,7 @@ msgid "MULTIUPLOAD_MENU_LABEL"
 msgstr "Multi Upload"
 
 msgid "MULTIUPLOAD_HEADER_FILENAME"
-msgstr "Title / filename"
+msgstr "File"
 
 msgid "MULTIUPLOAD_HEADER_SIZE"
 msgstr "Size"
@@ -40,9 +40,6 @@ msgstr "Upload files"
 
 msgid "MULTIUPLOAD_ACTION_CLEAR"
 msgstr "Clear selection"
-
-msgid "MULTIUPLOAD_MESSAGE_WAIT"
-msgstr "Please wait while uploading..."
 
 msgid "MULTIUPLOAD_MESSAGE_CHOOSE_FILES"
 msgstr "Choose one or more files"

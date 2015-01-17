@@ -1,29 +1,29 @@
 {#
 params:
 - id
+- q.uploading
 #}
 {% with m.session.multiupload_files as files %}
     {% if files %}
         <table class="table table-striped">
             <thead>
                 <tr>
-                <th>
-                    {_ MULTIUPLOAD_HEADER_FILENAME _}
-                </th>
-                <th>
-                    {_ MULTIUPLOAD_HEADER_SIZE _}
-                </th>
-                <th>
-                    {_ MULTIUPLOAD_HEADER_TYPE _}
-                </th>
-            </tr>
+                    <th>
+                        {_ MULTIUPLOAD_HEADER_FILENAME _}
+                    </th>
+                    <th>
+                        {_ MULTIUPLOAD_HEADER_SIZE _}
+                    </th>
+                    <th>
+                        {_ MULTIUPLOAD_HEADER_TYPE _}
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 {% for file in files %}
                     <tr>
                         <td>
-                            <b>{{ file.title }}</b>
-                            ({{ file.original_filename }})
+                            {{ file.original_filename }}
                         </td>
                         <td>
                             {{ file.size|filesizeformat }}
@@ -37,18 +37,25 @@ params:
                 {% endfor %}
             </tbody>
         </table>
-
-        <div class="well">
-            {% button class="btn btn-primary" text=_"MULTIUPLOAD_ACTION_UPLOAD"
-                action={mask body}
-                postback={save_batch id=id}
-                delegate=`mod_admin_multiupload`
-            %}
-            {% button class="btn btn-default" text=_"MULTIUPLOAD_ACTION_CLEAR"
-                postback={cancel_batch id=id}
-                delegate=`mod_admin_multiupload`
-            %}
-        </div>
-
+        {% if not q.uploading %}
+            <div id="amu_actions" class="well">
+                {% button class="btn btn-primary" text=_"MULTIUPLOAD_ACTION_UPLOAD"
+                    action={mask body}
+                    postback={save_batch id=id}
+                    delegate=`mod_admin_multiupload`
+                %}
+                {% button class="btn btn-default" text=_"MULTIUPLOAD_ACTION_CLEAR"
+                    postback={
+                        cancel_batch
+                        id=id
+                    }
+                    action={
+                        script
+                        script="$('#amu_progress_area').hide();"
+                    }
+                    delegate=`mod_admin_multiupload`
+                %}
+            </div>
+        {% endif %}
     {% endif %}
 {% endwith %}
