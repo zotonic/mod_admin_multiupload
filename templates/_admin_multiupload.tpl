@@ -9,12 +9,12 @@ params:
           <p>{_ MULTIUPLOAD_MESSAGE_WAIT _}</p>
 
           <div id="progress" class="progress progress-striped active">
-              <div class="bar" style="width: 0%;"></div>
+              <div class="progress-bar" style="width: 0%;"></div>
           </div>
       </div>
   
       <div id="uploadbutton" class="form-group">
-          <input type="file" id="fileupload" data-url="/api/admin_multiupload/upload" multiple value="" style="width: 0;" />
+          <input type="file" id="fileupload" data-url="/api/admin_multiupload/upload" multiple value="" style="display: none;" />
           <button class="btn btn-default" onclick="$('#fileupload').click();return false">{_ MULTIUPLOAD_MESSAGE_CHOOSE_FILES _}</button>
       </div>
     </div>
@@ -44,7 +44,7 @@ params:
             $('#uploadbutton').hide();
             $('#progressarea').show();
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .bar').css('width', progress + '%');
+            $('#progress .progress-bar').css('width', progress + '%');
         }
     });
     {% endjavascript %}
