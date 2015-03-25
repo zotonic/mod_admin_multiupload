@@ -20,8 +20,8 @@
 -module(mod_admin_multiupload).
 -author("Arjan Scherpenisse <arjan@scherpenisse.net>").
 
--mod_title("Admin file batch upload").
--mod_description("Batch uploading of media files.").
+-mod_title("Multi upload of media files").
+-mod_description("Upload multiple files at once.").
 -mod_prio(500).
 
 -include_lib("zotonic.hrl").
@@ -39,21 +39,21 @@ observe_admin_menu(admin_menu, Acc, Context) ->
      #menu_item{
       id=admin_multiupload,
       parent=admin_content,
-      label=?__("Batch upload", Context),
+      label=?__("MULTIUPLOAD_MENU_LABEL", Context),
       url={admin_multiupload, []},
       visiblecheck={acl, use, ?MODULE}}
      | Acc].
 
-
-event(#postback{message=save_batch}, Context) ->
-    save_batch(Context);
-event(#postback{message={delete_file, [{file, F}]}}, Context) ->
+    
+event(#postback{message={save_batch, [{id, Id}]}}, Context) ->
+    save_batch(Id, Context);
+event(#postback{message={delete_file, [{file, F}, {id, Id}]}}, Context) ->
     clear_batch([F], Context),
-    Html = z_template:render("_admin_multiupload_filelist.tpl", [], Context),
+    Html = z_template:render("_admin_multiupload_filelist.tpl", [{id, Id}], Context),
     z_render:update("files", Html, Context);
-event(#postback{message=cancel_batch}, Context) ->
+event(#postback{message={cancel_batch, [{id, Id}]}}, Context) ->
     clear_batch(Context),
-    Html = z_template:render("_admin_multiupload_filelist.tpl", [], Context),
+    Html = z_template:render("_admin_multiupload_filelist.tpl", [{id, Id}], Context),
     z_render:update("files", Html, Context).
 
 
@@ -77,14 +77,22 @@ clear_batch(Batch, Context) ->
     z_context:set_session(multiupload_files, Files1, Context).
 
 
-save_batch(Context) ->
+save_batch(PageId, Context) ->
     Files = z_context:get_session(multiupload_files, Context, []),
-    lists:foreach(fun(F) ->
-                          TmpFile = proplists:get_value(tmpfile, F),
-                          {ok, Id} = m_media:insert_file(TmpFile, F, [], Context),
-                          lager:warning("Id: ~p", [Id]),
-                          ok
-                  end,
-                  Files),
+    MediaIds = lists:map(fun(F) ->
+        TmpFile = proplists:get_value(tmpfile, F),
+        {ok, MediaId} = m_media:insert_file(TmpFile, F, [], Context),
+        MediaId
+    end, Files),
     clear_batch(Context),
-    z_render:wire([{redirect, [{dispatch, admin_media}]}], Context).
+    case PageId of
+        undefined ->
+            z_render:wire([{redirect, [{dispatch, admin_media}]}], Context);
+        Id ->
+            lists:foreach(fun(MediaId) ->
+                {ok, _} = m_edge:insert(Id, depiction, MediaId, Context)
+            end, MediaIds),
+            % generic way to update the page: do a page reload
+            Location = z_dispatcher:url_for(admin_edit_rsc, [{id, Id}], Context),
+            z_render:wire({redirect, [{location, Location}]}, Context)
+    end.
