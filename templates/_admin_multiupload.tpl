@@ -1,9 +1,9 @@
 {#
 params:
-- id
+- subject_id
+- predicate
 #}
 {% if m.acl.is_allowed.use.mod_admin_multiupload %}
-    {% lib "js/jquery.fileupload.js" %}
     <div class="control-group">
         <div id="amu_choose_button" class="form-group">
             <input type="file" id="fileupload" data-url="/api/admin_multiupload/upload" multiple value="" style="display: none;" />
@@ -16,20 +16,29 @@ params:
         </div>
     </div>
 
-    {% wire
-        name="refresh_files"
-        action={
-            update
-            target="files"
-            template="_admin_multiupload_filelist.tpl"
-            id=id
-        }
-    %}
-    <div id="files">
-      {% include "_admin_multiupload_filelist.tpl" id=id %}
-    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    {_ MULTIUPLOAD_HEADER_FILENAME _}
+                </th>
+                <th>
+                    {_ MULTIUPLOAD_HEADER_SIZE _}
+                </th>
+                <th>
+                    {_ MULTIUPLOAD_HEADER_TYPE _}
+                </th>
+            </tr>
+        </thead>
+        <tbody id="{{ #filelist }}">
+        </tbody>
+    </table>
+
+{% wire name="multiupload_show_file"
+        action={insert_top target=#filelist template="_admin_multiupload_filerow.tpl" is_dialog=is_dialog}
+%}
     
-    {% javascript %}
+{% javascript %}
     var barActiveClass = 'progress-bar-striped active',
         barSuccessClass = 'progress-bar-success',
         barMinPercent = 1,
@@ -38,12 +47,16 @@ params:
         done = false,
         barHeightInAnimationDuration = 300,
         barHeightOutAnimationDuration = 600;
+
     $('#fileupload').fileupload({
         dataType: 'json',
-        progressInterval: '300'
+        progressInterval: '300',
+        formData: {
+            subject_id: "{{ subject_id }}",
+            predicate: "{{ predicate }}"
+        }
     }).on('fileuploadstart', function(e, data) {
         done = false;
-        z_event("refresh_files", {uploading: true});
         $('#amu_progress.progress').css({
             'height': 0,
             'margin-bottom': 0
@@ -58,14 +71,16 @@ params:
         $('#amu_choose_button button').attr("disabled", "disabled");
         $('#amu_progress_area').show();
     }).on('fileuploadfail', function(e, data) {
-        z_event("refresh_files", {uploading: !done});
     }).on('fileuploaddone', function(e, data) {
-        z_event("refresh_files", {uploading: !done});
+        if (data.result.result == 'ok') {
+            z_event("multiupload_show_file", {id: data.result.id});
+        } else {
+            z_growl_add("{_ Error uploading file _}", false, "error");
+        }
     }).on('fileuploadprogressall', function(e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10),
             isUploading = (progress == 100) ? false : true,
             displayPercentage = barMinPercent + (progress / 100 * (100 - barMinPercent));
-        z_event("refresh_files", {uploading: !done});
         $('#amu_progress .progress-bar').css('width', displayPercentage + '%');
         if (!isUploading) {
             done = true;
@@ -81,7 +96,8 @@ params:
             }, 2000);
         }
     });
-    {% endjavascript %}
+{% endjavascript %}
+
 {% else %}
     <p class="alert alert-danger">{_ MULTIUPLOAD_MESSAGE_NOT_ALLOWED_USE _}</p>
 {% endif %}

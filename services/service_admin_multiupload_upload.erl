@@ -11,17 +11,26 @@ process_post(_ReqData, Context) ->
     case z_acl:is_allowed(use, mod_admin_multiupload, Context) of
         true ->
             U = #upload{} = z_context:get_q("files[]", Context),
-
-            File =
-                [{tmpfile, U#upload.tmpfile},
-                 {original_filename, U#upload.filename},
-                 {mime, z_media_identify:guess_mime(U#upload.filename)},
-                 {size, filelib:file_size(U#upload.tmpfile)},
-                 {title, filename:basename(U#upload.filename, filename:extension(U#upload.filename))}
-                ],
-            FileList = z_context:get_session(multiupload_files, Context, []),
-            z_context:set_session(multiupload_files, [File | FileList], Context),
-            {struct, [{result, ok}]};
+            SubjectId = z_convert:to_integer(z_context:get_q("subject_id", Context)),
+            PredicateId = m_rsc:rid(z_context:get_q("predicate", Context), Context),
+            CGId = m_rsc:p(SubjectId, content_group_id, Context),
+            Props = [
+                {is_published, true},
+                {content_group_id, CGId}
+            ],
+            case m_media:insert_file(U, Props, Context) of
+                {ok, MediaId} ->
+                    opt_edge(SubjectId, PredicateId, MediaId, Context),
+                    {struct, [{result, ok}, {id, MediaId}]};
+                {error, _} = Error ->
+                    lager:error("[~p] Error ~p when uploading file ~p", [z_context:site(Context), U, Error]),
+                    {struct, [{result, error}]}
+            end;
         false ->
             {error, access_denied, "Access denied"}
     end.
+
+opt_edge(SubjectId, PredicateId, MediaId, Context) when is_integer(SubjectId), is_integer(PredicateId) ->
+    m_edge:insert(SubjectId, PredicateId, MediaId, Context);
+opt_edge(_, _, _, _Context) ->
+    ok.
