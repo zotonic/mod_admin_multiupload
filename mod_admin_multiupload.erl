@@ -27,7 +27,7 @@
 -include_lib("zotonic.hrl").
 -include_lib("modules/mod_admin/include/admin_menu.hrl").
 
--export([observe_admin_menu/3, event/2]).
+-export([observe_admin_menu/3]).
 
 
 %%====================================================================
