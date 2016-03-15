@@ -10,9 +10,16 @@ params:
 
             <div class="row">
                <div class="col-md-6">
-                    <button class="btn btn-primary" onclick="$('#{{ #fileupload }}').click();return false">{_ MULTIUPLOAD_MESSAGE_CHOOSE_FILES _}</button>
+                    <button class="btn btn-primary" onclick="$('#{{ #fileupload }}').click();return false">
+                        {% if is_dialog %}{_ Quick upload _}{% else %}{_ MULTIUPLOAD_MESSAGE_CHOOSE_FILES _}{% endif %}
+                    </button>
                 </div>
                 <div class="col-md-6">
+                    {% if is_dialog %}
+                        <a href="{% url admin_multiupload subject_id=subject_id predicate=predicate %}" class="pull-right">
+                            {_ Advanced upload _}
+                        </a>
+                    {% endif %}
                     <div class="amu_progress_area" style="display: none; margin: 6px 0 0;">
                         <div class="progress clearfix" style="margin:0">
                             <div class="progress-bar" style="width: 0%; margin:0"></div>

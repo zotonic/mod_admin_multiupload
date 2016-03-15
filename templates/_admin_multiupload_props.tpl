@@ -15,6 +15,17 @@
 
 <div class="widget">
     <div class="widget-content">
+        {% if m.rsc[q.subject_id].is_linkable and m.rsc[q.predicate].id %}
+            <div class="form-group">
+                <label class="control-label">{_ Add as: _} {{ m.rsc[q.predicate].title }}</label>
+                <p>
+                    <a href="{% url admin_edit_rsc id=m.rsc[q.subject_id].id %}">
+                        {{ m.rsc[q.subject_id].title }}
+                    </a>
+                </p>
+                <input type="hidden" name="subject:{{ m.rsc[q.predicate].name }}" value="{{ m.rsc[q.subject_id].id }}" />
+            </div>
+        {% endif %}
         <div class="form-group">
             <label class="control-label">{_ Title _}</label>
             <input name="title" class="form-control" value="" placeholder="{_ Filename _}" />

@@ -15,13 +15,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "MULTIUPLOAD_TITLE"
-msgstr "Upload multiple files"
+msgstr "Upload files"
 
 msgid "MULTIUPLOAD_MESSAGE"
-msgstr "Upload multiple files at once and add them to the Media list."
+msgstr "Upload multiple files at once"
 
 msgid "MULTIUPLOAD_MENU_LABEL"
-msgstr "Multi Upload"
+msgstr "Media Upload"
 
 msgid "MULTIUPLOAD_HEADER_FILENAME"
 msgstr "File"
@@ -45,7 +45,7 @@ msgid "MULTIUPLOAD_MESSAGE_CHOOSE_FILES"
 msgstr "Choose one or more files"
 
 msgid "MULTIUPLOAD_MESSAGE_NOT_ALLOWED_USE"
-msgstr "You are not allowed to use module 'mod_admin_multiupload'."
+msgstr "You are not allowed to use module ‘mod_admin_multiupload’."
 
 
 

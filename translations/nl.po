@@ -15,13 +15,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "MULTIUPLOAD_TITLE"
-msgstr "Multi upload van bestanden"
+msgstr "Upload mediabestanden"
 
 msgid "MULTIUPLOAD_MESSAGE"
-msgstr "Upload meerdere mediabestanden tegelijk en voeg ze toe aan Mediabestanden."
+msgstr "Upload meerdere mediabestanden tegelijk"
 
 msgid "MULTIUPLOAD_MENU_LABEL"
-msgstr "Multi Upload"
+msgstr "Media Upload"
 
 msgid "MULTIUPLOAD_HEADER_FILENAME"
 msgstr "Bestand"
@@ -42,9 +42,9 @@ msgid "MULTIUPLOAD_ACTION_CLEAR"
 msgstr "Selectie wissen"
 
 msgid "MULTIUPLOAD_MESSAGE_CHOOSE_FILES"
-msgstr "Kies een of meerdere bestanden"
+msgstr "Kies één of meerdere bestanden"
 
 msgid "MULTIUPLOAD_MESSAGE_NOT_ALLOWED_USE"
-msgstr "Je mag module 'mod_admin_multiupload' niet gebruiken."
+msgstr "Je mag module ‘mod_admin_multiupload’ niet gebruiken."
 
 

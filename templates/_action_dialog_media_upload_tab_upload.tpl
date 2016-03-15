@@ -6,7 +6,11 @@
         {% inherit %}
     {% else %}
         <div class="tab-pane {% if is_active %}active{% endif %}" id="{{ tab }}-upload">
-            {% include "_admin_multiupload.tpl" subject_id=subject_id predicate=predicate|default:`depiction` is_dialog %}
+            {% include "_admin_multiupload.tpl"
+                       subject_id=subject_id
+                       predicate=predicate|default:`depiction`
+                       is_dialog
+            %}
         </div>
     {% endif %}
 {% endblock %}
