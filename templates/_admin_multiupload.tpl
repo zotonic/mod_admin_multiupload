@@ -13,6 +13,10 @@ params:
                     <button class="btn btn-primary" onclick="$('#{{ #fileupload }}').click();return false">
                         {% if is_dialog %}{_ Quick upload _}{% else %}{_ MULTIUPLOAD_MESSAGE_CHOOSE_FILES _}{% endif %}
                     </button>
+                    {% if not is_dialog %}
+                        <a class="btn btn-default" id="{{ #clear }}" href="#">{_ Clear _}</a>
+                        {% wire id=#clear action={update target=#filelist text=""} %}
+                    {% endif %}
                 </div>
                 <div class="col-md-6">
                     {% if is_dialog %}
