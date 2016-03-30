@@ -90,7 +90,7 @@
             }
         %}
 
-        {% if not m.modules.active.mod_media_exif %}
+        {% if m.modules.active.mod_media_exif %}
             <div class="form-group">
                 <select name="_force" class="form-control">
                     <option value="form">{_ Use date and geolocation set below (if filled) _}</option>
@@ -100,7 +100,7 @@
         {% else %}
             {% if m.acl.is_admin %}
                 <div class="form-group">
-                    <p class="help-block"><span class="z-icon z-icon-info-circle"></span> {_ Enable <em>mod_admin_exif</em> to set location and time from photo metadata. _}</p>
+                    <p class="help-block"><span class="z-icon z-icon-info-circle"></span> {_ Enable <em>mod_media_exif</em> to set location and time from photo metadata. _}</p>
                 </div>
             {% endif %}
             <input type="hidden" name="_force" value="form" />
