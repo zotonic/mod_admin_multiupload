@@ -75,7 +75,7 @@
                 $("input[type=hidden]", $block_page).val(v.object_id);
                 $("a.page-disconnect", $block_page).show();
                 $("a.page-connect", $block_page).hide();
-                z_notify("update", {z_delegate: 'mod_admin', template: "_rsc_item.tpl", id: v.object_id, z_target_id: target_id});
+                z_notify("update", {z_delegate: 'mod_admin', id: v.object_id, z_target_id: target_id});
             }
         {% endjavascript %}
 
